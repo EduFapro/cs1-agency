@@ -31,8 +31,13 @@ public class AgencyService {
     }
 
     public Agency updateAgency(Long id, Agency agencyDetails) {
-        Agency agency = agencyRepository.findById(id).orElseThrow(); // Add your exception handling
-        // Update agency details
+        Agency agency = agencyRepository.findById(id).orElseThrow(() -> new RuntimeException("Agency not found"));
+        agency.setName(agencyDetails.getName());
+        agency.setAddress(agencyDetails.getAddress());
+        agency.setPhoneNumber(agencyDetails.getPhoneNumber());
+        agency.setEmail(agencyDetails.getEmail());
+        agency.setLogo(agencyDetails.getLogo());
+        agency.setCnpj(agencyDetails.getCnpj());
         return agencyRepository.save(agency);
     }
 
