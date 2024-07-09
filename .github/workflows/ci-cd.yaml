@@ -76,22 +76,21 @@ jobs:
               echo "Error: No suitable package manager found."
               exit 1
             fi
-          
+      
             sudo usermod -aG docker $USERNAME
-            newgrp docker << END
-              # Verify Docker installation
-              if ! command -v docker &> /dev/null
-              then
-                echo "Docker installation failed."
-                exit 1
-              fi
-          
-              echo "Docker installed successfully."
-          
-              # Pull the latest Docker image and run the container
-              docker pull pedropucrs/agency-image:latest
-              docker stop agency-container || true
-              docker rm agency-container || true
-              docker run -d --name agency-container -p 8080:8080 pedropucrs/agency-image:latest
-            END
+      
+            # Verify Docker installation
+            if ! command -v docker &> /dev/null
+            then
+              echo "Docker installation failed."
+              exit 1
+            fi
+      
+            echo "Docker installed successfully."
+      
+            # Pull the latest Docker image and run the container with sudo
+            sudo docker pull pedropucrs/agency-image:latest
+            sudo docker stop agency-container || true
+            sudo docker rm agency-container || true
+            sudo docker run -d --name agency-container -p 8080:8080 pedropucrs/agency-image:latest
           EOF
