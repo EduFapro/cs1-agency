@@ -46,14 +46,19 @@ jobs:
           push: true
           tags: pedropucrs/agency-image:latest
 
-      - name: Deploy to server
+      - name: Deploy to EC2
         env:
-          SSH_PRIVATE_KEY: -----BEGIN OPENSSH PRIVATE KEY----- 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 -----END OPENSSH PRIVATE KEY-----
+          SSH_PRIVATE_KEY_EC2_PUCRS: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            -----END OPENSSH PRIVATE KEY-----
           HOST: ec2-34-203-210-23.compute-1.amazonaws.com
           USERNAME: ec2-user
         run: |
-          ssh -o StrictHostKeyChecking=no -i "$SSH_PRIVATE_KEY" $USERNAME@$HOST << 'EOF'
-          if ! command -v docker &> /dev/null
+          echo "$SSH_PRIVATE_KEY_EC2_PUCRS" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $USERNAME@$HOST << 'EOF'
+            if ! command -v docker &> /dev/null
             then
               echo "Docker not found, installing..."
               sudo apt-get update
@@ -62,7 +67,6 @@ jobs:
               sudo systemctl enable docker
               sudo usermod -aG docker $USERNAME
             fi
-
             docker pull pedropucrs/agency-image:latest
             docker stop agency-container || true
             docker rm agency-container || true
