@@ -58,15 +58,37 @@ jobs:
           echo "$SSH_PRIVATE_KEY_EC2_PUCRS" > private_key.pem
           chmod 600 private_key.pem
           ssh -o StrictHostKeyChecking=no -i private_key.pem $USERNAME@$HOST << 'EOF'
-            if ! command -v docker &> /dev/null
+            # Detect package manager and install Docker accordingly
+            if command -v apt-get &> /dev/null
             then
-              echo "Docker not found, installing..."
+              echo "Installing Docker using apt-get..."
               sudo apt-get update
               sudo apt-get install -y docker.io
               sudo systemctl start docker
               sudo systemctl enable docker
               sudo usermod -aG docker $USERNAME
+            elif command -v dnf &> /dev/null
+            then
+              echo "Installing Docker using dnf..."
+              sudo dnf install -y docker
+              sudo systemctl start docker
+              sudo systemctl enable docker
+              sudo usermod -aG docker $USERNAME
+            else
+              echo "Error: No suitable package manager found."
+              exit 1
             fi
+      
+            # Verify Docker installation
+            if ! command -v docker &> /dev/null
+            then
+              echo "Docker installation failed."
+              exit 1
+            fi
+      
+            echo "Docker installed successfully."
+      
+            # Pull the latest Docker image and run the container
             docker pull pedropucrs/agency-image:latest
             docker stop agency-container || true
             docker rm agency-container || true
